@@ -58,7 +58,7 @@ class TCPServer
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
                 writer.AutoFlush = true;
-                writer.WriteLine("Please enter the number (0-10) : ");
+                
                 while (true)
                 {
                     string id = reader.ReadLine();
