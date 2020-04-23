@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Text;
 
 class TCPServer
 {
@@ -26,6 +27,7 @@ class TCPServer
         {"7","Seven"},
         {"8","Eight"},
         {"9","Nine"},
+        {"10","Ten" },
     };
 
     public static void Main()
@@ -52,6 +54,10 @@ class TCPServer
             Console.WriteLine("Connection received from: {0}",
                               soc.RemoteEndPoint);
 
+            StringBuilder sb = new StringBuilder();
+            sb.Append("IP: Port Of Client: " + soc.RemoteEndPoint + ";" + "Connect at:" + DateTime.Now);
+            File.AppendAllText("D://Access.log", sb.ToString());
+            sb.Clear();
             try
             {
                 var stream = new NetworkStream(soc);
@@ -63,8 +69,15 @@ class TCPServer
                 {
                     string id = reader.ReadLine();
 
-                    if (String.IsNullOrEmpty(id))
-                        break; // disconnect
+                    if (id.ToUpper()== "EXIT")
+                    {
+                        writer.WriteLine("BYE");
+                        sb.Append(";Disconnect At: " + DateTime.Now + ";" + "Reason: Closed By Client\n");
+                        File.AppendAllText("D://Access.log", sb.ToString());
+                        sb.Clear();
+                        break;
+                    }    
+                       
 
                     if (_data.ContainsKey(id))
                         writer.WriteLine("Number you've entered: '{0}'", _data[id]);
