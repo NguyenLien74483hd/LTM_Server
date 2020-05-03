@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -41,7 +41,39 @@ class TCPServer
 
         for (int i = 0; i < MAX_CONNECTION; i++)
         {
-            new Thread(DoWork).Start();
+            Socket soc = listener.AcceptSocket();
+
+            StringBuilder sb = new StringBuilder();
+
+            StringBuilder sb1 = new StringBuilder();
+
+            string IPConnected = sb1.ToString();
+
+            if (IPConnected.Contains(soc.RemoteEndPoint.ToString()))
+
+            {
+
+                Console.WriteLine("429 Many Request");
+
+                sb.Append("IP:Port of Client: " + soc.RemoteEndPoint + ";" + "Disconnect At: " + DateTime.Now + ";Reason : 429 Many Request");
+
+                File.AppendAllText("D://Access.log", sb.ToString());
+
+                sb.Clear();
+
+            }
+
+            else
+
+            {
+
+                new Thread(DoWork).Start();
+
+                sb1.Append(soc.RemoteEndPoint);
+
+                File.AppendAllText("ConnectedIP.txt", sb1.ToString());
+
+            }
         }
     }
 
@@ -57,7 +89,7 @@ class TCPServer
             StringBuilder sb = new StringBuilder();
             sb.Append("IP: Port Of Client: " + soc.RemoteEndPoint + ";" + "Connect at:" + DateTime.Now);
             File.AppendAllText("D://Access.log", sb.ToString());
-            sb.Clear();
+            
             try
             {
                 var stream = new NetworkStream(soc);
