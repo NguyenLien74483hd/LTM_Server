@@ -36,7 +36,7 @@ class TCPServer
 
         listener = new TcpListener(address, PORT_NUMBER);
         Console.WriteLine("SERVER MULTI CLIENT CONNECTION");
-        Console.WriteLine("Waiting for connection...");
+        Console.WriteLine("Waiting for connection....");
         listener.Start();
 
         for (int i = 0; i < MAX_CONNECTION; i++)
